@@ -15,9 +15,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: Docker login
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_API_KEY }}
         run: |
-          echo "${{ secrets.DOCKERHUB_USER }}" | \
-            docker login --username "${{ secrets.DOCKERHUB_API_KEY }}" --password-stdin
+          echo "${DOCKER_PASSWORD}" | \
+            docker login --username "${DOCKER_USERNAME}" --password-stdin
       - name: Create buildx instance
         run: |
           docker run --rm --privileged docker/binfmt
