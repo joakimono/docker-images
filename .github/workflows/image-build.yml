@@ -29,7 +29,12 @@ jobs:
       - name: Build image with buildx
         env:
           THE_IMAGE: ${{ secrets.DOCKERHUB_USER }}/debian-${{ matrix.dist }}-buildbase
+          DOCKER_CLI_EXPERIMENTAL: enabled
         run: |
+          docker info
+          docker pull ${THE_IMAGE}:armv7
+          docker pull ${THE_IMAGE}:arm64
+          docker pull ${THE_IMAGE}:amd64
           docker buildx build --platform linux/arm/v7 --push \
             --tag ${THE_IMAGE}:armv7 \
             --file ./${{ matrix.dist }}.df .
