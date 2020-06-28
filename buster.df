@@ -1,0 +1,27 @@
+FROM debian:buster-slim
+
+RUN apt-get update && apt-get install -y \
+      bison \
+      build-essential \
+      ca-certificates \
+      cmake \
+      curl \
+      flex \
+      gawk \
+      git \
+      make \
+      nasm \
+      python3-pip \
+      wget \
+    && rm -r /var/lib/apt/lists/*
+
+RUN pip3 install --upgrade \
+      conan \
+      cython \
+      pip \
+      requests \
+      setuptools \
+      wheel
+
+RUN conan profile new default --detect
+WORKDIR /home
