@@ -1,4 +1,4 @@
-name: CI tests
+name: Docker image builds
 
 # This workflow is triggered on pushes to the repository.
 on: [push]
@@ -15,11 +15,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
       - name: Docker login
-        uses: azure/docker-login@v1
-        with:
-          login-server: index.docker.io
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_API_KEY }}
+        run: |
+          echo "${{ secrets.DOCKERHUB_USER }}" | \
+            docker login --username "${{ secrets.DOCKERHUB_API_KEY }}" --password-stdin
       - name: Create buildx instance
         run: |
           docker run --rm --privileged docker/binfmt
