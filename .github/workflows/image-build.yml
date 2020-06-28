@@ -31,5 +31,5 @@ jobs:
           docker buildx build \
             --platform linux/arm,linux/arm64,linux/amd64 \
             --push \
-            --tag ${{ secrets.DOCKERHUB_USR }}/debian-${{ matrix.dist }}-buildbase \
+            --tag ${{ secrets.DOCKERHUB_USER }}/debian-${{ matrix.dist }}-buildbase \
             --file ./${{ matrix.dist }}.df .
