@@ -27,9 +27,20 @@ jobs:
           docker buildx create --use --name builder
           docker buildx inspect --bootstrap
       - name: Build image with buildx
+        env:
+          THE_IMAGE: ${{ secrets.DOCKERHUB_USER }}/debian-${{ matrix.dist }}-buildbase
         run: |
-          docker buildx build \
-            --platform linux/arm,linux/arm64,linux/amd64 \
-            --push \
-            --tag ${{ secrets.DOCKERHUB_USER }}/debian-${{ matrix.dist }}-buildbase \
+          docker buildx build --platform linux/arm/v7 --push \
+            --tag ${THE_IMAGE}:armv7 \
             --file ./${{ matrix.dist }}.df .
+          docker buildx build --platform linux/arm64 --push \
+            --tag ${THE_IMAGE}:armv64 \
+            --file ./${{ matrix.dist }}.df .
+          docker buildx build --platform linux/amd64 --push \
+            --tag ${THE_IMAGE}:amd64 \
+            --file ./${{ matrix.dist }}.df .
+          docker manifest create ${THE_IMAGE}:latest \
+            ${THE_IMAGE}:armv7 \
+            ${THE_IMAGE}:arm64 \
+            ${THE_IMAGE}:amd64
+          docker manifest push ${THE_IMAGE}:latest
