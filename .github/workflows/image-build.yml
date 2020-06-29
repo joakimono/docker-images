@@ -32,9 +32,6 @@ jobs:
           DOCKER_CLI_EXPERIMENTAL: enabled
         run: |
           docker info
-          docker pull ${THE_IMAGE}:armv7
-          docker pull ${THE_IMAGE}:arm64
-          docker pull ${THE_IMAGE}:amd64
           docker buildx build --platform linux/arm/v7 --push \
             --tag ${THE_IMAGE}:armv7 \
             --file ./${{ matrix.dist }}.df .
@@ -46,6 +43,6 @@ jobs:
             --file ./${{ matrix.dist }}.df .
           docker manifest create ${THE_IMAGE}:latest \
             ${THE_IMAGE}:armv7 \
-            ${THE_IMAGE}:arm64 \
+            ${THE_IMAGE}:armv8 \
             ${THE_IMAGE}:amd64
           docker manifest push ${THE_IMAGE}:latest
