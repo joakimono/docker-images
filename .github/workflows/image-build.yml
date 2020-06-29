@@ -39,7 +39,7 @@ jobs:
             --tag ${THE_IMAGE}:armv7 \
             --file ./${{ matrix.dist }}.df .
           docker buildx build --platform linux/arm64 --push \
-            --tag ${THE_IMAGE}:arm64 \
+            --tag ${THE_IMAGE}:armv8 \
             --file ./${{ matrix.dist }}.df .
           docker buildx build --platform linux/amd64 --push \
             --tag ${THE_IMAGE}:amd64 \
